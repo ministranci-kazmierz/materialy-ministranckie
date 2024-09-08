@@ -1,0 +1,67 @@
+/*********************************************************************************************************************************************************************************
+ Program losujacy niedzielna sluzbe ministrantow.
+ Program obejmuje msze na 09:00, 10:45, 12:15, 18:00 oraz przydziela Hubertowi Borysowskiemu msze na 07:00.
+ Najmniej przydzielonych osob powinno zostac na msze o godzinie 18:00 z zalozenia 'liczbaMinistrantow/liczbaMszy'.
+
+ Hubert Borysowski 2024
+*********************************************************************************************************************************************************************************/
+
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+#include <cmath>
+
+int main(){
+    srand(time(0));
+    const std::string ministranci[] = {"Adamowicz Kacper", "Anktowiak Mateusz", "Berlinski Henryk",
+                                        "Derbis Piotr", "Litwiejko Jan", "Majek Jakub", 
+                                        "Paluszak Antoni", "Paluszak Jozef", "Polus Kamil", "Snela Dariusz", 
+                                        "Subsar Karol", "Wegrzyn Jakub", "Wielgosz Stanislaw", "Zachert Szymon"};
+    const int liczbaMszy = 4;
+    int liczbaMinistrantow = (sizeof(ministranci)/sizeof(ministranci[0]));
+    bool czyPrzydzielona[liczbaMinistrantow]{};
+    int losowaLiczba;
+    int stosunekMszyDoMinistrantow = round((double)liczbaMinistrantow/liczbaMszy);
+    int liczbaPrzydzielonychMszy = 0;
+
+    for(int i=0; i < liczbaMinistrantow; i++){
+        czyPrzydzielona[i] = false;
+    }
+    std:: cout << "07:00 | Hubert Borysowski\n";
+
+    for(int i=0; i < liczbaMinistrantow; i++){
+        losowaLiczba = rand()%liczbaMinistrantow;
+        if(czyPrzydzielona[losowaLiczba]){
+            i--;
+            continue;
+        }
+        if(liczbaPrzydzielonychMszy < stosunekMszyDoMinistrantow-1){
+            std::cout << "09:00 | " << ministranci[losowaLiczba] << '\n';
+            czyPrzydzielona[losowaLiczba] = true;
+            liczbaPrzydzielonychMszy++;
+            continue;
+        }
+        if(liczbaPrzydzielonychMszy < ((stosunekMszyDoMinistrantow*2)-1)){
+            std::cout << "10:45 | " << ministranci[losowaLiczba] << '\n';
+            czyPrzydzielona[losowaLiczba] = true;
+            liczbaPrzydzielonychMszy++;
+            continue;
+        }
+        if(liczbaPrzydzielonychMszy < (stosunekMszyDoMinistrantow*3)){ // Suma
+            std::cout << "12:15 | " << ministranci[losowaLiczba] << '\n';
+            czyPrzydzielona[losowaLiczba] = true;
+            liczbaPrzydzielonychMszy++;
+            continue;
+        }
+        if(liczbaPrzydzielonychMszy < (stosunekMszyDoMinistrantow*4)){
+            std::cout << "18:00 | " << ministranci[losowaLiczba] << '\n';
+            czyPrzydzielona[losowaLiczba] = true;
+            continue;
+        }
+    }
+    for(int k=0; k < liczbaMinistrantow; k++){
+        std::cout << czyPrzydzielona[k];
+    }
+    return 0;
+}
